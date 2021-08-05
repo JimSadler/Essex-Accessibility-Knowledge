@@ -80,7 +80,43 @@ Using the HTML button tag brings with it tabability, and javascript for a keyboa
 
 • The above examples also show the danger of using ARIA incorrectly
 
-## 2 Use Cases with Vuetify
+## 2 Use Cases
+
+### 2.1 ARIA Authoring Practices
+
+<a href="https://www.w3.org/TR/wai-aria-practices-1.1/#aria_ex" target="_blank"> Specific use cases for ARIA</a>
+
+### 2.2 Specific Use Cases
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#names_and_descriptions" target="_blank">Providing Accessible Names and Descriptions</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#aria_ex" target="_blank">Design Patterns</a>
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA7" target="_blank">aria-labelledby</a>
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA1" target="_blank"> aria-describedby</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#naming_with_aria-label" target="_blank">aria-label</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard" target="_blank">keyboard best practices</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion" target="_blank">Accordions (Expanding Panels</a>
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA12" target="_blank">Headings</a>
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA11" target="_blank">Landmarks</a>
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA5" target="_blank">Toggle Button /Slider</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#checkbox" target="_blank">Checkboxes</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#gridAndTableProperties" target="_blank">Tables</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal" target="_blank">Dialogs</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton" target="_blank">Radio Group</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#presentation_role" target="_blank">Hiding Semantics with presentation role</a>
 
 ### 2.1 • Accordions
 
@@ -234,11 +270,306 @@ Several HTML sectioning elements automatically create ARIA landmark regions. So,
 • There can only be one banner landmark on the page, with the exception of a nested iframe which can also have a banner landmark. In the event of multiple banner landmarks, a unique label needs to be applied so that AT users can differentiate between the two.
 
 **_Techniques:_**
-The HTML header element automatically defines a banner landmark when it is in context of the body. When the header element is a descendant of article, aside, section, main, or nav it is not considered a banner landmark
+
+**_*HTML*_**
+
+The HTML header element automatically defines a banner landmark when it is in context of the body. When the header element is a descendant of article, aside, section, main, or nav it is not considered a banner landmark.
+
+**_ARIA_**
+
+if the HTML header element technique is not being used, add a role="banner" attribute to define a banner landmark
+
+**_Example_**
+
+```html
+<body>
+    <header>
+      <h1>page title identifying website<h2>
+      .... contentinfo area content ....
+    </header>
+</body>
+
+... OR ...
+
+<div role="banner">
+  <h2>page title identifying website<h2>
+  .... contentinfo area content ....
+</div>
+```
 
 ##### 2.3.3.2 Complementary
 
 • A complimentary landmark is meant as a supporting section of the document, the main content
+
+• complementary landmarks should be top level landmarks
+
+• if there are more than one complementary landmarks, then a unique label should be used.
+
+**_Techniques:_**
+
+**_*HTML*_**
+
+The HTML aside element automatically defines a complementary landmark.
+
+**_*ARIA*_**
+
+if the HTML aside element is not being used, add a role="complementary" attribute to define a complementary landmark
+
+**_Example_**
+
+```html
+  <aside >
+    <h2>Title for complementary area<h2>
+    .... complementary area content ....
+  </aside>
+
+   OR ...
+
+<div role="complementary">
+  <h2>Title for complementary area<h2>
+  .... complementary area content ....
+</div>
+```
+
+#### 2.3.3.3 Contentinfo
+
+A contentinfo landmark is a way to identify common information at the bottom of each page within a website, typically called the "footer" of the page, including information such as copyrights and links to privacy and accessibility statements.
+
+• The contentinfo landmark should be a top level landmark
+
+• Each page should only have one contentinfo landmark
+
+• There can be multiple contentinfo landmarks when an embedded iframe/frame elements, and in that case each landmark should have unique labels
+
+**_Techniques_**
+
+**_HTML_**
+
+• The HTML footer element automatically creates a contentinfo landmark when it's context is the body element
+
+• The footer element is not considered a contentinfo landmark when it is the descendand of: article, aside, main, nav, section elements
+
+**_ARIA_**
+
+If the HTML footer element is not being used , adding a role="contentinfo" attribute will define a contentinfo landmark
+
+**_Example_**
+
+```html
+<body>
+    <footer>
+      <h2>Contact, Policies and Legal<h2>
+      .... contentinfo area content ....
+    </footer>
+</body>
+
+... OR ...
+
+<div role="contentinfo">
+  <h2>Contact, Policies and Legal<h2>
+  .... contentinfo area content ....
+</div>
+```
+
+#### 2.3.3.4 Form
+
+A form landmark identifies a region that contains a collection of items and objects that, as a whole, combine to create a form when no other named landmark is appropriate (e.g. main or search).
+
+• Use the search landmark instead of the form landmark if the form is used for search functionality
+
+• The form landmark should have a label to give context to users about form purpose
+
+• The form label should be visible to all users
+
+• Make sure to have a unique label for multiple form landmarks
+
+• When ever possible, make sure that controls contained in a form landmark are semantic HTML elements.
+
+**_Techniques_**
+
+**_HTML_**
+
+the HTML form element automatically defines a form landmark when it has an accessible name( aria-label, title, or aria-labelledby attributes)
+
+**_ARIA_**
+
+use the role="form" ARIA attribute to define a form region on the page; Do not use it for every form field, just the form container
+
+**_Example_**
+
+```html
+<form aria-labelledby="contact">
+  <fieldset>
+    <legend id="contact">Add Contact</legend>
+    ... form controls add contact ...
+  </fieldset>
+</form>
+
+... OR ...
+
+<div role="form" aria-labelledby="contact">
+  <fieldset>
+    <legend id="contact">Add Contact</legend>
+    ... form controls add contact ...
+  </fieldset>
+</div>
+```
+
+#### 2.3.3.5 Main
+
+A main landmark identifies the primary content of the page.
+
+• Each page should have one main landmark
+
+• The main landmark should be a top level landmark
+
+• When a page contains nested document and/or application roles (e.g. typically through the use of iframe and frame elements), each document or application role may have one main landmark.
+
+• If a page has multiple main landmarks, each landmark should have a unique label
+
+**_Techniques_**
+
+**_HTML_**
+
+Use the HTML semantic main element to automatically define a main landmark
+
+**_ARIA_**
+
+If the HTML main technique is not being used, then use a role="main" attribute to define a main landmark
+
+**_Example_**
+
+```html
+
+••• HTML •••
+<main>
+  <h1>title for main content<h1>
+  .... main content area ....
+</main>
+
+••• HTML Multiple landmarks
+
+<main aria-labelledby="title1">
+  <h1 id="title1">title for main content area 1<h1>
+  .... main content area 1 ....
+</main>
+
+....
+
+<main aria-labelledby="title2">
+  <h1 id="title2">title for main content area 2<h1>
+  .... main content area 2 ....
+</main>
+
+
+••• ARIA •••
+<div role="main">
+  <h1>title for main content<h1>
+  .... main content area ....
+</div>
+
+••• ARIA Multiple landmarks
+<div role="main" aria-labelledby="title1">
+  <h1 id="title1">title for main content area 1<h1>
+  .... main content area 1 ....
+</div>
+
+....
+<div role="main" aria-labelledby="title2">
+  <h1 id="title2">title for main content area 2<h1>
+  .... main content area 2 ....
+</div>
+
+```
+
+#### 2.3.3.6 Navigation
+
+Navigation landmarks provide a way to identify groups (e.g. lists) of links that are intended to be used for website or page content navigation.
+
+• If a page contains more than one navigation landmark, then a unique label should be used
+
+• If a navigation landmark has an identical set of links as another navigation landmark, then use the same label for each landmark
+
+**_Techniques_**
+
+**_HTML_**
+Use the HTML semantic nav element to automatically define a navigation landmark
+
+**_ARIA_**
+
+If the HTML technique is not being used, then use role="navigation" attribute to define a navigation landmark
+
+**_Example_**
+
+```html
+••• HTML •••
+<nav>
+  <h2>title for navigation area<h2>
+  <ul>
+    <li><a href="page1.html">Link 1</a></li>
+    <li><a href="page2.html">Link 2</a></li>
+    <li><a href="page3.html">Link 3</a></li>
+    <li><a href="page4.html">Link 4</a></li>
+    .....
+  </ul>
+</nav>
+
+••• ARIA •••
+<div role="navigation">
+  <h2>title for navigation area<h2>
+  <ul>
+    <li><a href="page1.html">Link 1</a></li>
+    <li><a href="page2.html">Link 2</a></li>
+    <li><a href="page3.html">Link 3</a></li>
+    <li><a href="page4.html">Link 4</a></li>
+    .....
+  </ul>
+</div>
+```
+
+#### 2.3.3.7 Region
+
+•
+
+•
+
+•
+
+•
+
+**_Techniques_**
+
+**_HTML_**
+
+**_ARIA_**
+
+**_Example_**
+
+```html
+
+```
+
+#### 2.3.3.8 Search
+
+•
+
+•
+
+•
+
+•
+
+**_Techniques_**
+
+**_HTML_**
+
+**_ARIA_**
+
+**_Example_**
+
+```html
+
+```
 
 • Checkboxes/ Radio Buttons
 
