@@ -100,25 +100,9 @@ Using the HTML button tag brings with it tabability, and javascript for a keyboa
 
 • <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#keyboard" target="_blank">keyboard best practices</a>
 
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion" target="_blank">Accordions (Expanding Panels</a>
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion" target="_blank">Accordions (Expanding Panels)</a>
 
-• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA12" target="_blank">Headings</a>
-
-• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA11" target="_blank">Landmarks</a>
-
-• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA5" target="_blank">Toggle Button /Slider</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#checkbox" target="_blank">Checkboxes</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#gridAndTableProperties" target="_blank">Tables</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal" target="_blank">Dialogs</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton" target="_blank">Radio Group</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#presentation_role" target="_blank">Hiding Semantics with presentation role</a>
-
-### 2.1 • Accordions
+**_NOTE_**
 
 When using expansion panel component, Vuetify takes care of this automatically for the UI in that the user knows that there is expanded content. The implementation that Vuetify uses, in my opinion is flawed. The reason that this approach is flawed:
 
@@ -185,7 +169,7 @@ When using expansion panel component, Vuetify takes care of this automatically f
 </div>
 ```
 
-### • 2.2 Headings
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA12" target="_blank">Headings</a>
 
 Heading levels are a way that AT users can navigate a webpage. It creates an outline that they can use for context. The heading levels need to be in order for this functionality. There are a few guidelines here to keep in mind:
 
@@ -223,29 +207,128 @@ if role="heading" is not applied, then some SR will not interpret the element co
 </div>
 ```
 
-### • 2.3 Landmarks
-
-ARIA landmark roles provide a powerful way to identify the organization and structure of a web page. By classifying and labelling sections of a page, they enable structural information that is conveyed visually through layout to be represented programmatically. Screen readers exploit landmark roles to provide keyboard navigation to important sections of a page. Landmark regions can also be used as targets for "skip links" and by browser extensions to enhanced keyboard navigation.
-
-This section explains how HTML sectioning elements and ARIA landmark roles are used to make it easy for assistive technology users to understand the meaning of the layout of a page.
-
-#### 2.3.1 HTML Sectioning Elements
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA11" target="_blank">Landmarks</a>
 
 Several HTML sectioning elements automatically create ARIA landmark regions. So, in order to provide assistive technology users with a logical view of a page, it is important to understand the effects of using HTML sectioning elements. To be clear using semantic HTML elements will create landmarks automatically. In the event that you are not using semantic HTML sectioning elements, ARIA landmarks need to be used.
 
-#### HTML Element Default Landmark Role
+Semantic HTML sectioning elements offer automatic landmarks when used correctly.
+
+**_Complementary_**
 
 • aside ---> role="complimentary"
 
+• A complimentary landmark is meant as a supporting section of the document, the main content
+
+• complementary landmarks should be top level landmarks
+
+• if there are more than one complementary landmarks, then a unique label should be used.
+
+```html
+••• HTML •••
+  <aside >
+    <h2>Title for complementary area<h2>
+    .... complementary area content ....
+  </aside>
+
+••• ARIA •••
+
+<div role="complementary">
+  <h2>Title for complementary area<h2>
+  .... complementary area content ....
+</div>
+```
+
+**_Contentinfo_**
+
+A contentinfo landmark is a way to identify common information at the bottom of each page within a website, typically called the "footer" of the page, including information such as copyrights and links to privacy and accessibility statements.
+
 • footer ---> role="contentinfo" - when in context of the body element
+
+• The contentinfo landmark should be a top level landmark
+
+• Each page should only have one contentinfo landmark
+
+• There can be multiple contentinfo landmarks when an embedded iframe/frame elements, and in that case each landmark should have unique labels
+
+```html
+••• HTML •••
+<body>
+    <footer>
+      <h2>Contact, Policies and Legal<h2>
+      .... contentinfo area content ....
+    </footer>
+</body>
+
+••• ARIA •••
+<div role="contentinfo">
+  <h2>Contact, Policies and Legal<h2>
+  .... contentinfo area content ....
+</div>
+```
+
+**_Banner_**
 
 • header ---> role="banner" - when in context of the body element
 
+• The Banner landmark identifies site oriented content at the top of the page. Most often this is referred to as the header.
+
+• Things that may be included in the banner: Logo, Main navigation, search.
+
+• the banner landmark should be a top level landmark
+
+• There can only be one banner landmark on the page, with the exception of a nested iframe which can also have a banner landmark. In the event of multiple banner landmarks, a unique label needs to be applied so that AT users can differentiate between the two.
+
+```html
+
+••• HTML •••
+<body>
+    <header>
+      <h1>page title identifying website<h2>
+      .... contentinfo area content ....
+    </header>
+</body>
+
+••• ARIA •••
+
+<div role="banner">
+  <h2>page title identifying website<h2>
+  .... contentinfo area content ....
+</div>
+```
+
+**_Main_**
+
+A main landmark identifies the primary content of the page.
+
 • main ---> role="main"
+
+• Each page should have one main landmark
+
+• The main landmark should be a top level landmark
+
+• When a page contains nested document and/or application roles (e.g. typically through the use of iframe and frame elements), each document or application role may have one main landmark.
+
+• If a page has multiple main landmarks, each landmark should have a unique label
+
+**_Navigation_**
 
 • nav ---> role="navigation"
 
+**_Section_**
+
 • section ---> role="region"
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA5" target="_blank">Toggle Button /Slider</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#checkbox" target="_blank">Checkboxes</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#gridAndTableProperties" target="_blank">Tables</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal" target="_blank">Dialogs</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton" target="_blank">Radio Group</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#presentation_role" target="_blank">Hiding Semantics with presentation role</a>
 
 #### 2.3.2 Landmark Design
 
@@ -258,118 +341,6 @@ Several HTML sectioning elements automatically create ARIA landmark regions. So,
 **_note:_** do not use the name of the landmark in the label as that will create redundancy with the SR announcement.
 
 #### 2.3.3 Landmark Roles
-
-##### 2.3.3.1 Banner
-
-• The Banner landmark identifies site oriented content at the top of the page. Most often this is referred to as the header.
-
-• Things that may be included in the banner: Logo, Main navigation, search.
-
-• the banner landmark should be a top level landmark
-
-• There can only be one banner landmark on the page, with the exception of a nested iframe which can also have a banner landmark. In the event of multiple banner landmarks, a unique label needs to be applied so that AT users can differentiate between the two.
-
-**_Techniques:_**
-
-**_*HTML*_**
-
-The HTML header element automatically defines a banner landmark when it is in context of the body. When the header element is a descendant of article, aside, section, main, or nav it is not considered a banner landmark.
-
-**_ARIA_**
-
-if the HTML header element technique is not being used, add a role="banner" attribute to define a banner landmark
-
-**_Example_**
-
-```html
-<body>
-    <header>
-      <h1>page title identifying website<h2>
-      .... contentinfo area content ....
-    </header>
-</body>
-
-... OR ...
-
-<div role="banner">
-  <h2>page title identifying website<h2>
-  .... contentinfo area content ....
-</div>
-```
-
-##### 2.3.3.2 Complementary
-
-• A complimentary landmark is meant as a supporting section of the document, the main content
-
-• complementary landmarks should be top level landmarks
-
-• if there are more than one complementary landmarks, then a unique label should be used.
-
-**_Techniques:_**
-
-**_*HTML*_**
-
-The HTML aside element automatically defines a complementary landmark.
-
-**_*ARIA*_**
-
-if the HTML aside element is not being used, add a role="complementary" attribute to define a complementary landmark
-
-**_Example_**
-
-```html
-  <aside >
-    <h2>Title for complementary area<h2>
-    .... complementary area content ....
-  </aside>
-
-   OR ...
-
-<div role="complementary">
-  <h2>Title for complementary area<h2>
-  .... complementary area content ....
-</div>
-```
-
-#### 2.3.3.3 Contentinfo
-
-A contentinfo landmark is a way to identify common information at the bottom of each page within a website, typically called the "footer" of the page, including information such as copyrights and links to privacy and accessibility statements.
-
-• The contentinfo landmark should be a top level landmark
-
-• Each page should only have one contentinfo landmark
-
-• There can be multiple contentinfo landmarks when an embedded iframe/frame elements, and in that case each landmark should have unique labels
-
-**_Techniques_**
-
-**_HTML_**
-
-• The HTML footer element automatically creates a contentinfo landmark when it's context is the body element
-
-• The footer element is not considered a contentinfo landmark when it is the descendand of: article, aside, main, nav, section elements
-
-**_ARIA_**
-
-If the HTML footer element is not being used , adding a role="contentinfo" attribute will define a contentinfo landmark
-
-**_Example_**
-
-```html
-<body>
-    <footer>
-      <h2>Contact, Policies and Legal<h2>
-      .... contentinfo area content ....
-    </footer>
-</body>
-
-... OR ...
-
-<div role="contentinfo">
-  <h2>Contact, Policies and Legal<h2>
-  .... contentinfo area content ....
-</div>
-```
 
 #### 2.3.3.4 Form
 
