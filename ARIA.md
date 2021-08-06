@@ -310,106 +310,6 @@ A main landmark identifies the primary content of the page.
 
 • If a page has multiple main landmarks, each landmark should have a unique label
 
-**_Navigation_**
-
-• nav ---> role="navigation"
-
-**_Section_**
-
-• section ---> role="region"
-
-• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA5" target="_blank">Toggle Button /Slider</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#checkbox" target="_blank">Checkboxes</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#gridAndTableProperties" target="_blank">Tables</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal" target="_blank">Dialogs</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton" target="_blank">Radio Group</a>
-
-• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#presentation_role" target="_blank">Hiding Semantics with presentation role</a>
-
-#### 2.3.2 Landmark Design
-
-• Assign landmark roles based on the type of content in area
-
-• banner, main, complimentary and contentinfo landmarks should be top level landmarks
-
-• if a landmark is used multiple times on a page, like multiple navigation landmarks, each instance should have a unique label.
-
-**_note:_** do not use the name of the landmark in the label as that will create redundancy with the SR announcement.
-
-#### 2.3.3 Landmark Roles
-
-#### 2.3.3.4 Form
-
-A form landmark identifies a region that contains a collection of items and objects that, as a whole, combine to create a form when no other named landmark is appropriate (e.g. main or search).
-
-• Use the search landmark instead of the form landmark if the form is used for search functionality
-
-• The form landmark should have a label to give context to users about form purpose
-
-• The form label should be visible to all users
-
-• Make sure to have a unique label for multiple form landmarks
-
-• When ever possible, make sure that controls contained in a form landmark are semantic HTML elements.
-
-**_Techniques_**
-
-**_HTML_**
-
-the HTML form element automatically defines a form landmark when it has an accessible name( aria-label, title, or aria-labelledby attributes)
-
-**_ARIA_**
-
-use the role="form" ARIA attribute to define a form region on the page; Do not use it for every form field, just the form container
-
-**_Example_**
-
-```html
-<form aria-labelledby="contact">
-  <fieldset>
-    <legend id="contact">Add Contact</legend>
-    ... form controls add contact ...
-  </fieldset>
-</form>
-
-... OR ...
-
-<div role="form" aria-labelledby="contact">
-  <fieldset>
-    <legend id="contact">Add Contact</legend>
-    ... form controls add contact ...
-  </fieldset>
-</div>
-```
-
-#### 2.3.3.5 Main
-
-A main landmark identifies the primary content of the page.
-
-• Each page should have one main landmark
-
-• The main landmark should be a top level landmark
-
-• When a page contains nested document and/or application roles (e.g. typically through the use of iframe and frame elements), each document or application role may have one main landmark.
-
-• If a page has multiple main landmarks, each landmark should have a unique label
-
-**_Techniques_**
-
-**_HTML_**
-
-Use the HTML semantic main element to automatically define a main landmark
-
-**_ARIA_**
-
-If the HTML main technique is not being used, then use a role="main" attribute to define a main landmark
-
-**_Example_**
-
 ```html
 
 ••• HTML •••
@@ -453,24 +353,48 @@ If the HTML main technique is not being used, then use a role="main" attribute t
 
 ```
 
-#### 2.3.3.6 Navigation
+**_Form_**
+A form landmark identifies a region that contains a collection of items and objects that, as a whole, combine to create a form when no other named landmark is appropriate (e.g. main or search).
+
+• form ---> role="form"
+
+• Use the search landmark instead of the form landmark if the form is used for search functionality
+
+• The form landmark should have a label to give context to users about form purpose
+
+• The form label should be visible to all users
+
+• Make sure to have a unique label for multiple form landmarks
+
+• When ever possible, make sure that controls contained in a form landmark are semantic HTML elements.
+
+```html
+<form aria-labelledby="contact">
+  <fieldset>
+    <legend id="contact">Add Contact</legend>
+    ... form controls add contact ...
+  </fieldset>
+</form>
+
+... OR ...
+
+<div role="form" aria-labelledby="contact">
+  <fieldset>
+    <legend id="contact">Add Contact</legend>
+    ... form controls add contact ...
+  </fieldset>
+</div>
+```
+
+**_Navigation_**
 
 Navigation landmarks provide a way to identify groups (e.g. lists) of links that are intended to be used for website or page content navigation.
+
+• nav ---> role="navigation"
 
 • If a page contains more than one navigation landmark, then a unique label should be used
 
 • If a navigation landmark has an identical set of links as another navigation landmark, then use the same label for each landmark
-
-**_Techniques_**
-
-**_HTML_**
-Use the HTML semantic nav element to automatically define a navigation landmark
-
-**_ARIA_**
-
-If the HTML technique is not being used, then use role="navigation" attribute to define a navigation landmark
-
-**_Example_**
 
 ```html
 ••• HTML •••
@@ -497,6 +421,34 @@ If the HTML technique is not being used, then use role="navigation" attribute to
   </ul>
 </div>
 ```
+
+**_Section_**
+
+• section ---> role="region"
+
+• <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA5" target="_blank">Toggle Button /Slider</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#checkbox" target="_blank">Checkboxes</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#gridAndTableProperties" target="_blank">Tables</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal" target="_blank">Dialogs</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#radiobutton" target="_blank">Radio Group</a>
+
+• <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#presentation_role" target="_blank">Hiding Semantics with presentation role</a>
+
+#### 2.3.2 Landmark Design
+
+• Assign landmark roles based on the type of content in area
+
+• banner, main, complimentary and contentinfo landmarks should be top level landmarks
+
+• if a landmark is used multiple times on a page, like multiple navigation landmarks, each instance should have a unique label.
+
+**_note:_** do not use the name of the landmark in the label as that will create redundancy with the SR announcement.
+
+#### 2.3.3 Landmark Roles
 
 #### 2.3.3.7 Region
 
