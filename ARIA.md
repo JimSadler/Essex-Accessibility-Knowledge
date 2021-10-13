@@ -424,7 +424,51 @@ Navigation landmarks provide a way to identify groups (e.g. lists) of links that
 
 **_Section_**
 
+A region landmark is a perceivable section of the page containing content that is sufficiently important for users to be able to navigate to the section.
+
 • section ---> role="region"
+
+• A region landmark must have a label.
+
+• If a page includes more than one region landmark, each should have a unique label.
+
+•The region landmark can be used identify content that named landmarks do not appropriately describe.
+
+```html
+
+••• HTML •••
+<main>
+  <h1>title for main content area<h1>
+
+  <section aria-labelledby="region1">
+    <h2 id="region1">title for region area 1</h2>
+    ... content for region area 1 ...
+  </section>
+
+  <section aria-labelledby="region2">
+    <h2 id="region2">title for region area 2</h2>
+    ... content for region area 2 ...
+  </section>
+
+</main>
+
+••• ARIA •••
+<div role="main">
+
+  <h1>title for main content area<h1>
+
+  <div role="region" aria-labelledby="region1">
+    <h2 id="region1">title for region area 1</h2>
+    ... content for region area 1 ...
+  </div>
+
+  <div role="region" aria-labelledby="region2">
+    <h2 id="region2">title for region area 2</h2>
+    ... content for region area 2 ...
+  </div>
+
+</div>
+```
 
 • <a href="https://www.w3.org/TR/WCAG20-TECHS/aria#ARIA5" target="_blank">Toggle Button /Slider</a>
 
@@ -447,30 +491,6 @@ Navigation landmarks provide a way to identify groups (e.g. lists) of links that
 • if a landmark is used multiple times on a page, like multiple navigation landmarks, each instance should have a unique label.
 
 **_note:_** do not use the name of the landmark in the label as that will create redundancy with the SR announcement.
-
-#### 2.3.3 Landmark Roles
-
-#### 2.3.3.7 Region
-
-•
-
-•
-
-•
-
-•
-
-**_Techniques_**
-
-**_HTML_**
-
-**_ARIA_**
-
-**_Example_**
-
-```html
-
-```
 
 #### 2.3.3.8 Search
 
