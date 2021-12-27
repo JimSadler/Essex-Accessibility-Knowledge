@@ -703,6 +703,17 @@ We can do this because the search button will help the visual users understand t
 }
 ```
 
+The above is also a good technique to add screen reader only text for more context to a link or button.
+
+```html
+<a href="#"
+  >Read More
+  <span class="hidden-visually"> about this particular subject</span>
+</a>
+
+<!-- this technique will visually show the text "Read More", and the screen reader will announce "Read More about this particular subject" -->
+```
+
 **_Hiding Content from Screen reader_**
 
 Adding aria-hidden="true" will hide the element from assistive technology(AT) but leave it visually available. **_do not use this on focusable elements_**. Only use this on decorative, duplicated, or offscreen content.

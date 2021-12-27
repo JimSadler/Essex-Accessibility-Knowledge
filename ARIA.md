@@ -1,13 +1,5 @@
 # UI Developer A11Y Knowledge Article
 
-Abbreviations
-
-• AT = Assistive Technology
-
-• SR = Screen Reader
-
-• a11y - description for anything about accessibility
-
 ## 1.1 What is WAI-ARIA?
 
 WAI-ARIA, the **_A_**ccessible **_R_**ich **_I_**nternet **_A_**pplications Suite, defines a way to make Web content and Web applications more accessible to people with disabilities. It especially helps with dynamic content and advanced user interface controls developed with HTML, JavaScript, and related technologies.
