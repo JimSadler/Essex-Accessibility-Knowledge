@@ -14,7 +14,7 @@ The World Health Organization estimates that 15% of the world's population has s
 
 There is a wide range of disabilities that can be catagorize as
 
-- Visual - These users can benefit from the use of screen readers, screen magnification, screen contrast, and refreshable braille displays.
+- Visual - These users benefit from the use of screen readers, screen magnification, screen contrast, and refreshable braille displays.
 - Auditory - These users benefit from captioning, transcripts or sign language videos
 - Motor - These users benefit from a range of assistive technologies for motor impairments: adaptive keyboards, oversized trackball mouse, sip and puff switch, head wand, single-switch access, eye tracking, voice recognition software, etc...
 - Cognitive - these users benefit from supplemental media, structural organization of content, clear and simple writing.
@@ -32,10 +32,10 @@ There is a wide range of disabilities that can be catagorize as
 
 ## Manual testing needs to accompany automated testing
 
-Deque's automated testing solution catches about 57% of digital accessibility issues, which is great, but automated testing will not be able to flag keyboard-only navigation, Descriptive Content, or User Experience.
+Deque's automated testing solution (axe core/axe extension) catches about 57% of digital accessibility issues, which is great, but automated testing will not be able to flag keyboard-only navigation, Descriptive Content, or User Experience.
 
-1. **_Keyboard-only navigation_** - Navigating a website without a mouse is necessary for many users that have disabilities. Being able to access page menus, interact with links/buttons/pop-up windows(dialogs), ect.. using only keyboard commands. It is very important for Test Engineers and Developers to have the knowledge to be able to test the website with the keyboard / screenreaders. To achieve this, test engineers and front end developers need to understand how to use a screen reader, and how a keyboard only user navigates a webpage.
-2. **_Descriptive Content_** - Titles, headings and alt text all must be appropriately descriptive. Scans can tell you weather these attributes/elements are present, but they will not be able to access if these elements are appropriate for the page.
+1. **_Keyboard-only navigation_** - Navigating a website without a mouse is necessary for many users that have disabilities. Being able to access page menus, interact with links/buttons/pop-up windows(dialogs), ect.. using only keyboard commands, is essential for Test Engineers and Developers to have the knowledge to be able to test the website with the keyboard / screenreaders. To achieve this, test engineers and front end developers need to understand how to use a screen reader, and how a keyboard only user navigates a webpage.
+2. **_Descriptive Content_** - Titles, headings and alt text all must be appropriately descriptive. Scans can tell you weather these attributes/elements are present, but they will not be able to assess if these elements are appropriate for the page.
 3. **_User Experience_** - Automated testing can not interact with a website the way that a user would. For example: Consider testing the website for submitting an assay/variant ect.. an automated testing tool can not interact with the website and click the submit button, or select the correct assay to submit. A manual tester can do this and simulate the process finding any a11y issues present.
 4. **_False Negatives_** - automated tests will inevitably report an issue that is not an issue, the axe extension tries to aleviate this by catagorizing the issues that it can not difinitively say is an issue into a 'Needs Review' catagory. But these 'Needs Reviews' need to be manually tested by test engineers/developers to make sure that there are no a11y issues.
 
@@ -63,14 +63,16 @@ There just is not enough time to conduct extensive manual accessibility testing 
   - Timers
   - Different Languages
   - Critical Pages
-  - Key Entry Points
-  - Key User Paths
-  - Highest Traffic Pages
-  - The Obvious
-  - Feedback Forms
-  - Accessibility Policy Pages
+    - Key Entry Points
+    - Key User Paths
+    - Highest Traffic Pages
+    - The Obvious
+    - Feedback Forms
+    - Accessibility Policy Pages
 
   <br>
+  this list comes from Glenda Simms at Deque University. To read more about this:
+  <a href="https://www.deque.com/blog/manual-accessibility-testing-approach/" target="_blank">Accessibility: Manual Testing Approach</a>
 
 ---
 
@@ -542,9 +544,10 @@ You can also use an aria-label to give the input an accessible name:
   name="name"
   id="name"
   v-model="name"
-  :aria-label="nameLabel"
+  :aria-label="Full Name"
 />
-<!-- this approach negates the label tag. A screen reader will only announce the aria-label; in this example the screenreader will announce : "nameLabel"-->
+<!-- this approach negates the label tag. A screen reader will only announce the aria-label;
+ in this example the screenreader will announce : "Full Name"-->
 ```
 
 <br>
@@ -574,7 +577,7 @@ Using aria-labelledby is similar to aria-label, except of the implementation. It
   <button type="submit">Submit</button>
 </form>
 
-<!-- in this example, the screenreader will announce "Billing Name: -->
+<!-- in this example, the screenreader will announce "Billing Name:" -->
 ```
 
 <br>
@@ -605,7 +608,7 @@ aria-describedby is used in the same way as aria-labelledby except it provides a
   </div>
   <button type="submit">Submit</button>
 </form>
-<!-- In this example the screen reader will announce: "Billing Full Name: Please provide first and last name-->
+<!-- In this example the screen reader will announce: "Billing Full Name: Please provide first and last name" -->
 ```
 
 #### Instructions
@@ -626,7 +629,7 @@ When adding instructions for the input controls in your form, make sure to link 
 </fieldset>
 ```
 
-<!-- in this example a screen reader will announce: Current Date: MM/DD/YYYY-->
+<!-- in this example a screen reader will announce: "Current Date: MM/DD/YYYY" -->
 
 ```html
 <fieldset>
@@ -636,7 +639,7 @@ When adding instructions for the input controls in your form, make sure to link 
   <p id="dob-instructions">MM/DD/YYYY</p>
 </fieldset>
 
-<!-- in this example a screen reader will announce: Current Date: MM/DD/YYYY-->
+<!-- in this example a screen reader will announce: "Current Date: MM/DD/YYYY" -->
 ```
 
 #### Try to avoid:
@@ -711,7 +714,8 @@ The above is also a good technique to add screen reader only text for more conte
   <span class="hidden-visually"> about this particular subject</span>
 </a>
 
-<!-- this technique will visually show the text "Read More", and the screen reader will announce "Read More about this particular subject" -->
+<!-- this technique will visually show the text "Read More", and the screen reader will announce
+ "Read More about this particular subject" -->
 ```
 
 **_Hiding Content from Screen reader_**
@@ -793,10 +797,11 @@ For reference: <a href="<https://www.w3.org/TR/wai-aria-practices-1.1/examples/d
   - <a href="https://www.nvaccess.org/download/">NVDA</a>
   - <a href="https://www.freedomscientific.com/products/software/jaws/?utm_term=jaws%20screen%20reader&utm_source=adwords&utm_campaign=All+Products&utm_medium=ppc&hsa_tgt=kwd-394361346638&hsa_cam=200218713&hsa_ad=296201131673&hsa_kw=jaws%20screen%20reader&hsa_grp=52663682111&hsa_net=adwords&hsa_mt=e&hsa_src=g&hsa_acc=1684996396&hsa_ver=3&gclid=Cj0KCQjwnv71BRCOARIsAIkxW9HXKQ6kKNQD0q8a_1TXSJXnIuUyb65KJeTWmtS6BH96-5he9dsNq6oaAh6UEALw_wcB">JAWS</a>
 
-* Axe Extension
+* Extensions (for testing browser pages for a11y)
 
-  - <a href="https://chrome.google.com/webstore/detail/axe-devtools-web-accessib/lhdoppojpmngadmnindnejefpokejbdd?hl=en-US" target="_blank">Chrome</a>
-  - <a href="https://addons.mozilla.org/en-US/firefox/addon/axe-devtools/" target="_blank">Firefox</a>
+  - <a href="https://chrome.google.com/webstore/detail/axe-devtools-web-accessib/lhdoppojpmngadmnindnejefpokejbdd?hl=en-US" target="_blank"> Axe Extension for Chrome</a>
+  - <a href="https://addons.mozilla.org/en-US/firefox/addon/axe-devtools/" target="_blank">Axe Extension for Firefox</a>
+  - <a href="https://wave.webaim.org/extension/" target="_blank">WebAim WAVE Extension</a>
 
 * Color Contrast Tools
   - <a href="https://webaim.org/resources/contrastchecker/"  target="_blank">WebAim Color Contrast </a>
@@ -804,7 +809,6 @@ For reference: <a href="<https://www.w3.org/TR/wai-aria-practices-1.1/examples/d
 
 - Automated Tools
 
-  - <a href="https://chrome.google.com/webstore/detail/wave-evaluation-tool/jbbplnpkjmmeebjpijfedlgcdilocofh" target="_blank">WAVE</a>
   - <a href="https://marketplace.visualstudio.com/items?itemName=deque-systems.vscode-axe-linter"  target="_blank">Axe Linter (developers)</a> this tool will help to identify problems in the codebase. Looking for accessibility issues. Note: The linter is currently flagging an accessibility error on the rule: click-events-have-key-events on actionable elements with the @click in vue.js files. There is already an issue reported for this false positive, and they are looking into it. if you add an axe-linter.yml file in the root of codebase to silence this error until they can fix it. the axe-linter.yml file should have this content:
 
     axe-linter.yml
