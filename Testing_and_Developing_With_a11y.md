@@ -71,7 +71,7 @@ There just is not enough time to conduct extensive manual accessibility testing 
     - Accessibility Policy Pages
 
   <br>
-  this list comes from Glenda Simms at Deque University. To read more about this:
+  this list comes from Glenda Sims at Deque University. To read more about this:
   <a href="https://www.deque.com/blog/manual-accessibility-testing-approach/" target="_blank">Accessibility: Manual Testing Approach</a>
 
 ---
@@ -108,8 +108,6 @@ There just is not enough time to conduct extensive manual accessibility testing 
 ---
 
 <br>
-
-Vuetify handles the much of the accessiblility concerns. YAY! Good for Vuetify. That being said there are a few concerns, and alternative fixes that are beneficial.
 
 ## Skip Link
 
@@ -229,7 +227,7 @@ Using ARIA we can fix heading order issues using this technique:
 
 Landmarks provide programmatic access to sections within an application. Users that rely on Assistive Technology (AT) can use landmarks to navigate each section of the website and skip over content.
 
-Several HTML sectioning elements automatically create ARIA landmark regions. So, in order to provide assistive technology users with a logical view of a page, it is important to understand the effects of using HTML sectioning elements. To be clear using semantic HTML elements will create landmarks automatically. In the event that you are not using semantic HTML sectioning elements, ARIA landmarks can to be used.
+Several HTML sectioning elements automatically create ARIA landmark regions. So, in order to provide assistive technology users with a logical view of a page, it is important to understand the effects of using HTML sectioning elements. To be clear using semantic HTML elements will create landmarks automatically. In the event that you are not using semantic HTML sectioning elements, ARIA landmark roles can to be used.
 
 #### **_Landmark Design_**
 
@@ -253,7 +251,7 @@ Several HTML sectioning elements automatically create ARIA landmark regions. So,
 **_Banner_**
 
 - header ---> role="banner" - when in context of the body element
-- The Banner landmark identifies site oriented content at the top of the page. Most often this is referred to as the header.
+- The banner landmark identifies site oriented content at the top of the page. Most often this is referred to as the header.
 - Things that may be included in the banner: Logo, Main navigation, search.
 - the banner landmark should be a top level landmark
 - There can only be one banner landmark on the page, with the exception of a nested iframe which can also have a banner landmark. In the event of multiple banner landmarks, a unique label needs to be applied so that AT users can differentiate between the two.
