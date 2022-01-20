@@ -1,7 +1,5 @@
 # Testing and Developing with Accessibility in Mind
 
-Web Accessibility(a11y) refers to the practice of creating websites that can be used by anyone specifically a person with a disability; but not limited to that.
-
 ## Abbreviations
 
 - AT = Assistive Technology
@@ -37,7 +35,7 @@ Deque's automated testing solution (axe core/axe extension) catches about 57% of
 1. **_Keyboard-only navigation_** - Navigating a website without a mouse is necessary for many users that have disabilities. Being able to access page menus, interact with links/buttons/pop-up windows(dialogs), ect.. using only keyboard commands, is essential for Test Engineers and Developers to have the knowledge to be able to test the website with the keyboard / screenreaders. To achieve this, test engineers and front end developers need to understand how to use a screen reader, and how a keyboard only user navigates a webpage.
 2. **_Descriptive Content_** - Titles, headings and alt text all must be appropriately descriptive. Scans can tell you weather these attributes/elements are present, but they will not be able to assess if these elements are appropriate for the page.
 3. **_User Experience_** - Automated testing can not interact with a website the way that a user would. For example: Consider testing the website for submitting an assay/variant ect.. an automated testing tool can not interact with the website and click the submit button, or select the correct assay to submit. A manual tester can do this and simulate the process finding any a11y issues present.
-4. **_False Negatives_** - automated tests will inevitably report an issue that is not an issue, the axe extension tries to aleviate this by catagorizing the issues that it can not difinitively say is an issue into a 'Needs Review' catagory. But these 'Needs Reviews' need to be manually tested by test engineers/developers to make sure that there are no a11y issues.
+4. **_False Negatives_** - automated tests will inevitably report an issue that is not an issue, the axe extension tries to aleviate this by catagorizing the issues that it can not difinitively say are an issue into a 'Needs Review' category. But these 'Needs Reviews' need to be manually tested by test engineers/developers to make sure that there are no a11y issues.
 
 <br>
 
@@ -71,7 +69,7 @@ There just is not enough time to conduct extensive manual accessibility testing 
     - Accessibility Policy Pages
 
   <br>
-  this list comes from Glenda Sims at Deque University. To read more about this:
+  this comes from Glenda Sims at Deque University. To read more about this:
   <a href="https://www.deque.com/blog/manual-accessibility-testing-approach/" target="_blank">Accessibility: Manual Testing Approach</a>
 
 ---
@@ -86,6 +84,8 @@ There just is not enough time to conduct extensive manual accessibility testing 
 - radio/checkbox elements are a little different. the first one or default selected option in the group is tabbable, and the others are navigatable with the arrows. Selection of an element should be the spacebar.
 - select elements are different as well. Users will expect that the element be triggered with the spacebar, and then navigate through all the options with the arrow keys. The arrow functionality should be trapped until a selection is made.
 - Some users use headings to navigate which is why it is important that they are in order. Navigating by headings creates an 'outline' of the page.
+
+alot of this is handled by Vuetify, however they should be manually tested to make sure.
 
 <br>
 
@@ -112,6 +112,10 @@ There just is not enough time to conduct extensive manual accessibility testing 
 ## Skip Link
 
 A skip link at the top of each page that goes directly to the main content area is helpful for users so they can skip content that is repeated on multiple pages for example, Page navigation.
+
+note: this is not required, as long as there is another way that the user can navigate, for example a compliant heading structure ( see content structure section )
+
+EXAMPLE:
 
 Typically this is done on the top of the App.vue as it will be the first focusable element on all your pages:
 
@@ -218,7 +222,8 @@ Using ARIA we can fix heading order issues using this technique:
   <!--  heading level 6 -->
 </div>
 
-<!-- this technique does not affect the styles of the headings. It just dictates the heading level for the screen reader. -->
+<!-- this technique does not affect the styles of the headings.
+ It just dictates the heading level for the screen reader. -->
 ```
 
 <div class="container">
@@ -499,7 +504,7 @@ A region landmark is a perceivable section of the page containing content that i
 
 <br>
 
-## Semantic Forms
+## Accessible forms using semantic html
 
 ```html
 <form action="/dataCollectionLocation" method="post" autocomplete="on">
@@ -625,9 +630,8 @@ When adding instructions for the input controls in your form, make sure to link 
   />
   <p id="date-instructions">MM/DD/YYYY</p>
 </fieldset>
-```
-
 <!-- in this example a screen reader will announce: "Current Date: MM/DD/YYYY" -->
+```
 
 ```html
 <fieldset>
@@ -659,18 +663,21 @@ this works, but it is better supported by Assistive Technology to explicitly mat
 
 #### Form Errors
 
-Form Errors depending on how they are developed need to be addressed so that AT/Keyboard users will know what the error is. A couple of solutions:
+Form Errors need to be addressed so that AT/Keyboard users will know what the error is. Here are a few ways to implement accessble form errors.
 
 1. when the form is submitted and there are errors, show a box with all the errors and shift focus to the error box.
-2. use an alert. Vuetify has a great solution for errors.
+2. use an alert.
 3. when errors occur on submit, show error messages above the input with the error, programatically connect the input with the error message using aria-describedby attribute, and shift focus to the first input with an error.
+4. add aria-required="true" to the required inputs. (this will alert the AT user that they need to fill out this input before submitting)
 
 Ex.
 
 ```html
 <span id="err1" class="error_message">The username is not valid</span>
 <label for="name">Username</label>
-<input id="name" aria-describedby="err1" />
+<input id="name" aria-required="true" aria-describedby="err1" />
+
+<!-- this input will announce as required on first pass, and when it is submitted the user will hear " input username,  the username is not valid" once the input is refocused -->
 ```
 
 ### Hiding Content
@@ -718,11 +725,21 @@ The above is also a good technique to add screen reader only text for more conte
 
 **_Hiding Content from Screen reader_**
 
-Adding aria-hidden="true" will hide the element from assistive technology(AT) but leave it visually available. **_do not use this on focusable elements_**. Only use this on decorative, duplicated, or offscreen content.
+Adding aria-hidden="true" will hide the element from assistive technology(AT) but leave it visually available.
+
+**_Only use this on decorative, duplicated, or offscreen content._**.
 
 ```html
-<p>This is not hidden from screen readers.</p>
-<p aria-hidden="true">This is hidden from screen readers.</p>
+<form role="search">
+  <label for="searchIcon" class="hidden-visually">Search: </label>
+  <input type="text" name="searchIcon" id="searchIcon" v-model="searchIcon" />
+  <button type="submit">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <span class="hidden-visually">Search</span>
+  </button>
+</form>
+<!-- notice the use of aria-hidden on the search icon.
+ Also note the visually-hidden text in the button -->
 ```
 
 <br>
@@ -774,6 +791,9 @@ For reference: <a href="<https://www.w3.org/TR/wai-aria-practices-1.1/examples/d
 
 ---
 
+Vuetify does handle many a11y solutions for keyboard users built in their components.
+<a href="https://vuetifyjs.com/en/features/accessibility/#additional-resources"  target="_blank">For more information on how Vuetify implements Accessiblity</a>
+
 <br>
 
 ## Resources
@@ -787,6 +807,7 @@ For reference: <a href="<https://www.w3.org/TR/wai-aria-practices-1.1/examples/d
 - Web Accessibility Initiative - Accessible Rich Internet Applications(WAI-ARIA)
   - <a href="https://www.w3.org/TR/wai-aria-1.2/"  target="_blank">Accessible Rich Internet Applications (ARIA)</a>
   - <a href="https://www.w3.org/TR/wai-aria-practices-1.2/"  target="_blank">ARIA Authoring Practices</a>
+  - <a href="https://material.io/design/usability/accessibility.html#hierarchy"  target="_blank">Material Design Accessiblity</a>
 
 ### Tools to use for 508
 
