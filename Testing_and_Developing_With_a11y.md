@@ -61,12 +61,9 @@ There just is not enough time to conduct extensive manual accessibility testing 
   - Timers
   - Different Languages
   - Critical Pages
-    - Key Entry Points
+    - Key Entry Points (login/logout)
     - Key User Paths
-    - Highest Traffic Pages
-    - The Obvious
-    - Feedback Forms
-    - Accessibility Policy Pages
+    - Submit Forms
 
   <br>
   this comes from Glenda Sims at Deque University. To read more about this:
@@ -85,7 +82,7 @@ There just is not enough time to conduct extensive manual accessibility testing 
 - select elements are different as well. Users will expect that the element be triggered with the spacebar, and then navigate through all the options with the arrow keys. The arrow functionality should be trapped until a selection is made.
 - Some users use headings to navigate which is why it is important that they are in order. Navigating by headings creates an 'outline' of the page.
 
-alot of this is handled by Vuetify, however they should be manually tested to make sure.
+some of this is addressed, in part by Vuetify, however they should be manually tested to make sure.
 
 <br>
 
@@ -173,9 +170,9 @@ Content structure is very important for accessiblity.
 
 ### Headings
 
-Users can navigate an application through headings. Having descriptive headings for every section makes it easier for users to predict the content of each section. When it comes to headings there are some recommended accessibility practices:
+Users can navigate an application using headings. Having descriptive headings for every section makes it easier for users to predict the content of each section. When it comes to headings there are some recommended best practices for a11y:
 
-1. Nest headings in their ranking order.
+1. Implement headings in their ranking order.
 
 2. there needs to be at least one h1 on a page that describes the page.
 
@@ -186,6 +183,7 @@ Users can navigate an application through headings. Having descriptive headings 
    2. use the correct heading markup and then use vuetify's helper classes for text size. "text-h1, text-h2, text-h3, ect..."
 
 4. Use actual heading tags instead of styling text to give the visual appearance of headings
+5. Bold text does not need to be a heading if it is not the 'heading' of something. Just because it is bold text, does not mean that it is a heading.
 
 ```html
 <main role="main" aria-labelledby="main-title">
@@ -230,9 +228,9 @@ Using ARIA we can fix heading order issues using this technique:
 
 ### Landmarks
 
-Landmarks provide programmatic access to sections within an application. Users that rely on Assistive Technology (AT) can use landmarks to navigate each section of the website and skip over content.
+Landmarks programatically gives access to sections within an application. Users that rely on Assistive Technology (AT) can use landmarks to navigate each section of the website and skip over content.
 
-Several HTML sectioning elements automatically create ARIA landmark regions. So, in order to provide assistive technology users with a logical view of a page, it is important to understand the effects of using HTML sectioning elements. To be clear using semantic HTML elements will create landmarks automatically. In the event that you are not using semantic HTML sectioning elements, ARIA landmark roles can to be used.
+Several HTML sectioning elements automatically create ARIA landmark regions. So, in order to provide assistive technology users with a logical view of a page, it is important to understand the effects of using HTML sectioning elements. To be clear using semantic HTML elements will create landmarks automatically, with the exception of the search landmark. In the event that you are not using semantic HTML sectioning elements, ARIA landmark roles can to be used.
 
 #### **_Landmark Design_**
 
@@ -557,7 +555,7 @@ You can also use an aria-label to give the input an accessible name:
 
 #### ARIA-LABELLEDBY
 
-Using aria-labelledby is similar to aria-label, except of the implementation. It is mostly used if the text that labels the input is visible on screen, and there is no programmatic connection to the input. It is implemented by using the id of the visible label text as the value of the aria-labelledby attribute. It is possible to have multiple values, which will result with the screenreader announcing the values of the attribute in order.
+Using aria-labelledby is similar to aria-label, except for the implementation. It is mostly used if the text that labels the input is visible on screen, and there is no programmatic connection to the input. It is implemented by using the id of the visible label text as the value of the aria-labelledby attribute. It is possible to have multiple values, which will result with the screenreader announcing the values of the attribute in order.
 
 ```html
 <form
@@ -587,7 +585,7 @@ Using aria-labelledby is similar to aria-label, except of the implementation. It
 
 #### ARIA-DESCRIBEDBY
 
-aria-describedby is used in the same way as aria-labelledby except it provides a description with additional information that the user might need.
+aria-describedby is used in the same way as aria-labelledby except it provides a description with additional information that the user might need, after the initial announcement of the element.
 
 ```html
 <form
@@ -772,10 +770,12 @@ Adding aria-hidden="true" will hide the element from assistive technology(AT) bu
 
 It is always better, to use an interactive element like a link or a button. These interactive elements come with both the ability to be tabbed to, and keyboard functionality. As far as which one to use? It is usually better to use links when the action is to navigate somewhere, and buttons when an action on the page is needed like opening a menu or modal.
 
+**_In general_**: it is best to use a link when the action involves navigation, and a button element when another action is desired, for example a trigger for a menu or modal
+
 Avoid using clickable divs. This can create many a11y issues
 
 1. divs are not interactive elements so adding the ability to tab to the element is necessary for Keyboard and AT users.
-2. divs also are not keyboard activatable so code would have to be written to make sure that an AT/Keyboard user can interact with it.
+2. divs also are not keyboard actionable so code would have to be written to make sure that an AT/Keyboard user can interact with it.
 3. Using a semantic actionable element handles both of the concerns with a clickable div. this makes it an easy fix.
 
 ### Modals
