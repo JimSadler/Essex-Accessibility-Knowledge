@@ -21,7 +21,7 @@ There is a wide range of disabilities that can be catagorize as
 
 - <a href="https://www.w3.org/WAI/perspective-videos/" target="_blank">Perspective Videos</a>
 - <a href="https://www.w3.org/WAI/people-use-web/user-stories/"  target="_blank">User Stories</a>
-  %md <a href="https://google.com" target="_blank">google link</a>
+
   <br>
 
 ---
