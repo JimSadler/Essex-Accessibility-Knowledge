@@ -7,29 +7,30 @@
 DataTable.vue -
 
 ```js
-// add caption prop
-props: {
-  caption: String,
+export default {
+  // add caption prop
+  props: {
+    caption: String,
+  }
+  mounted() {
+  /*
+    1. create caption element with offscreen text class
+    2. set captionText to the caption prop
+    3. prepend caption element to the table as first child
+  */
+    if (this.caption) {
+      console.log('there is a caption')
+      let captionElement = document.createElement('caption')
+      captionElement.setAttribute('class', 'd-sr-only')
+      let captionText = document.createTextNode(this.caption)
+      captionElement.appendChild(captionText)
+      let wrapper = this.$refs.table.$el.querySelector('table')
+      if (captionText !== '') {
+        wrapper.prepend(captionElement)
+      }
+    }
+  }
 }
-mounted() {
-	/*
-	1. create caption element with offscreen text class
-	2. set captionText to the caption prop
-	3. prepend caption element to the table as first child
-	*/
-	if (this.caption) {
-		console.log('there is a caption')
-		let captionElement = document.createElement('caption')
-		captionElement.setAttribute('class', 'd-sr-only')
-		let captionText = document.createTextNode(this.caption)
-		captionElement.appendChild(captionText)
-		let wrapper = this.$refs.table.$el.querySelector('table')
-		if (captionText !== '') {
-			wrapper.prepend(captionElement)
-		}
-	}
-
-},
 ```
 
 file where table-wrapper exists
