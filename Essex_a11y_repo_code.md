@@ -44,6 +44,8 @@ file where table-wrapper exists
 />
 ```
 
+
+
 ## Fix for Vuetify Accordions bug
 
 Background: Vuetify tries to make their expansion panels accessible. They make one mistake on initial load of the component -> they add aria-expanded to the wrapper that contains the button, and not on the button itself. This creates a situation where the user will not know that the content is expandable. They will just know that there is a button, but not that the button is expandable, until after the button is clicked. This fix removes the aria-expanded from the wrapper on initial load of the page, and adds it to the button element which fixes the issue
