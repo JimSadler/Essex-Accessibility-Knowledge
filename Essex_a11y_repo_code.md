@@ -7,29 +7,29 @@
 DataTable.vue -
 
 ```js
-// add caption prop 
+// add caption prop
 props: {
   caption: String,
 }
 mounted() {
-		/* 
-		1. create caption element with offscreen text class 
-		2. set captionText to the caption prop 
-		3. prepend caption element to the table as first child
-		*/
-		if (this.caption) {
-			console.log('there is a caption')
-			let captionElement = document.createElement('caption')
-			captionElement.setAttribute('class', 'd-sr-only')
-			let captionText = document.createTextNode(this.caption)
-			captionElement.appendChild(captionText)
-			let wrapper = this.$refs.table.$el.querySelector('table')
-			if (captionText !== '') {
-				wrapper.prepend(captionElement)
-			}
+	/*
+	1. create caption element with offscreen text class
+	2. set captionText to the caption prop
+	3. prepend caption element to the table as first child
+	*/
+	if (this.caption) {
+		console.log('there is a caption')
+		let captionElement = document.createElement('caption')
+		captionElement.setAttribute('class', 'd-sr-only')
+		let captionText = document.createTextNode(this.caption)
+		captionElement.appendChild(captionText)
+		let wrapper = this.$refs.table.$el.querySelector('table')
+		if (captionText !== '') {
+			wrapper.prepend(captionElement)
 		}
+	}
 
-	},
+},
 ```
 
 file where table-wrapper exists
@@ -41,10 +41,7 @@ file where table-wrapper exists
   class="empty-dash"
   caption="Copy Number Variants (CNV) Un-normalized"
 />
-
 ```
-
-
 
 ## Fix for Vuetify Accordions bug
 
@@ -55,18 +52,18 @@ Background: Vuetify tries to make their expansion panels accessible. They make o
 
 ```js
 export function panelChange(panel) {
-	setTimeout(() => {
-		// remove aria-label from wrapper
-		let wrapper = panel?.$el
-		wrapper.removeAttribute('aria-expanded')
+  setTimeout(() => {
+    // remove aria-label from wrapper
+    let wrapper = panel?.$el
+    wrapper.removeAttribute('aria-expanded')
 
-		// set aria-label on button
-		let button = panel?.$el?.querySelector('button')
-		if (button.getAttribute('aria-expanded') === null) {
-			button.setAttribute('aria-expanded', false)
-			wrapper.removeAttribute('aria-expanded')
-		}
-	}, 10)
+    // set aria-label on button
+    let button = panel?.$el?.querySelector('button')
+    if (button.getAttribute('aria-expanded') === null) {
+      button.setAttribute('aria-expanded', false)
+      wrapper.removeAttribute('aria-expanded')
+    }
+  }, 10)
 }
 ```
 
@@ -113,19 +110,15 @@ export function panelChange(panel) {
 	</v-expansion-panels>
 ```
 
-
-
-4. Add panelChange with reference to template to mounted section. Also add panelChange as a method 
+4. Add panelChange with reference to template to mounted section. Also add panelChange as a method
 
    ```js
    export default {
-   mounted() {
-   		panelChange(this.$refs.assignedPanel)
-   	},
-   	methods: {
-   		panelChange,
-   	},
+     mounted() {
+       panelChange(this.$refs.assignedPanel)
+     },
+     methods: {
+       panelChange
+     }
    }
    ```
-
-   
