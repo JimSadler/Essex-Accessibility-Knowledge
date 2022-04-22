@@ -2,6 +2,68 @@
 
 # A11y Code Examples
 
+## a11y - Skip to Main link
+
+1. add link element with class of skipLink and href="#main" to App.vue
+2. Add id="main" to v-main component
+
+```vue
+<template>
+	<v-app v-resize="() => $store.dispatch('width')">
+		<div class=" skip text-left">
+			<a href="#main" ref="skipLink" class="skipLink text-left">Skip to main content</a>
+		</div>
+		<!-- nav bar -->
+		<nav-bar-base />
+
+		<!-- side bar -->
+		<side-bar-base
+			v-if="($store.getters['auth/authenticated'] && $route.name !== 'login') || skipAuth"
+		/>
+
+		<!-- page view -->
+		<transition name="page" mode="out-in">
+			<v-main :key="$route.name" id="main">
+				<router-view />
+			</v-main>
+		</transition>
+
+		<!-- nav bar -->
+		<footer-base />
+
+		<!-- global components -->
+		<timeout-guard v-if="!skipAuth" />
+		<snackbar />
+	</v-app>
+</template>
+```
+
+3. add styles for link
+
+```scss
+<style lang="scss">
+/* skip link */
+
+.skipLink {
+	white-space: nowrap;
+	margin: 1em auto;
+	top: 0;
+	left: 4%;
+	position: fixed;
+	opacity: 0;
+}
+.skipLink:focus {
+	opacity: 1;
+	background-color: white;
+	padding: 0.5em;
+	border: 3px solid color(aqua-lighten1);
+	z-index: 10;
+}
+</style>
+```
+
+
+
 ## a11y - caption for data tables
 
 DataTable.vue -

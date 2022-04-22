@@ -106,57 +106,7 @@ some of this is addressed, in part by Vuetify, however they should be manually t
 
 <br>
 
-## Skip Link
 
-A skip link at the top of each page that goes directly to the main content area is helpful for users so they can skip content that is repeated on multiple pages for example, Page navigation.
-
-note: this is not required, as long as there is another way that the user can navigate, for example a compliant heading structure ( see content structure section )
-
-EXAMPLE:
-
-Typically this is done on the top of the App.vue as it will be the first focusable element on all your pages:
-
-```html
-<ul class="skip-links">
-  <li>
-    <a href="#main" ref="skipLink">Skip to main content</a>
-  </li>
-</ul>
-```
-
-to hide the link unless it is focused:
-
-```css
-.skipLink {
-  white-space: nowrap;
-  margin: 1em auto;
-  top: 0;
-  position: fixed;
-  left: 50%;
-  margin-left: -72px;
-  opacity: 0;
-}
-.skipLink:focus {
-  opacity: 1;
-  background-color: white;
-  padding: 0.5em;
-  border: 1px solid black;
-}
-```
-
-and shifting the focus back to the skip link when the user changes the route:
-
-```html
-<script>
-  export default {
-    watch: {
-      $route() {
-        this.$refs.skipLink.focus()
-      }
-    }
-  }
-</script>
-```
 
 <br>
 
