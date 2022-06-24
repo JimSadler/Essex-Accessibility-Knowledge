@@ -108,82 +108,173 @@ file where table-wrapper exists
 
 
 
-## Fix for Vuetify Accordions bug
 
-Background: Vuetify tries to make their expansion panels accessible. They make one mistake on initial load of the component -> they add aria-expanded to the wrapper that contains the button, and not on the button itself. This creates a situation where the user will not know that the content is expandable. They will just know that there is a button, but not that the button is expandable, until after the button is clicked. This fix removes the aria-expanded from the wrapper on initial load of the page, and adds it to the button element which fixes the issue
 
-1. Create AriaUtil.js file if not already created.
-2. Add new panelChange function and export for use in entire project
+## Using DialogMixin for a11y functionality
+
+This mixin applies a tab loop for dialogs, so that SR users can't exit the dialog with a tab key press. It also adds an aria-label to the dialog element for SR user announcement 
+
+1. create the DialogMixin.js file
 
 ```js
-export function panelChange(panel) {
-  setTimeout(() => {
-    // remove aria-label from wrapper
-    let wrapper = panel?.$el
-    wrapper.removeAttribute('aria-expanded')
+export default {
+	props: {
+		value: {
+			type: Boolean,
+			default: false,
+		},
+		attach: {
+			type: String,
+			required: true,
+		},
+	},
 
-    // set aria-label on button
-    let button = panel?.$el?.querySelector('button')
-    if (button.getAttribute('aria-expanded') === null) {
-      button.setAttribute('aria-expanded', false)
-      wrapper.removeAttribute('aria-expanded')
-    }
-  }, 10)
+	methods: {
+		$_refocus(el) {
+			// wait for preview dialog to close
+			setTimeout(() => {
+				if (el) {
+					el.focus()
+				} else {
+					this.$refs.$_refocus.$el.focus()
+				}
+			}, 1)
+		},
+		cleanup() {
+			let dialog = document.querySelector(this.attach + ' > [role="dialog"]')
+			if (!dialog) return
+			// remove tabstops
+			if (dialog.previousElementSibling) dialog.previousElementSibling.remove()
+			if (dialog.nextElementSibling) dialog.nextElementSibling.remove()
+		},
+	},
+
+	watch: {
+		value: {
+			immediate: true,
+			handler(value) {
+				if (value) {
+					// wait for dialog animation
+					setTimeout(() => {
+						let dialog = document.querySelector(this.attach + ' > [role="dialog"]')
+						dialog.setAttribute(
+							'aria-label',
+							this.$refs.dialogLabel.innerText || this.$refs.dialogLabel.textContent?.trim()
+						)
+						dialog.removeAttribute('tabindex')
+						dialog.insertAdjacentHTML('beforebegin', '<div class="tabstop" tabindex="0"></div>')
+						dialog.insertAdjacentHTML('afterend', '<div class="tabstop" tabindex="0"></div>')
+						let focusables = dialog.querySelectorAll(
+							'button:not([disabled]), input, select, textarea, div[tabindex="0"]:not(.tabstop)'
+						)
+						focusables[0].focus()
+						let lastFocusable = focusables[focusables.length - 1]
+						// tabstop #1
+						dialog.previousElementSibling.addEventListener('focus', () => {
+							lastFocusable.focus()
+						})
+					}, 1)
+				} else {
+					// parents using only v-model will inherit a falsy value when dialog closes
+					this.cleanup()
+				}
+			},
+		},
+	},
+
+	// parents using v-if will destroy the dialog
+	beforeDestroy() {
+		this.cleanup()
+	},
+}
+
+```
+
+2. create a div with an id to attach the dialog to.
+
+3. Add the dialog component with the attach prop. Set the value of the prop to the div id
+
+   
+
+   ```vue
+   	<div id="com_doc_attach"></div>
+   		<CommentsDocumentsDialog
+   			v-model="CommsDocsDialogOpen"
+   			:participantId="participantId"
+   			attach="#com_doc_attach"
+   		/>
+   ```
+
+   
+
+4. in the dialog component add the attach prop to the dialog in the template
+5. set a ref prop with the value of dialogLabel to the header of the dialog
+6. add aria-label that describes what the close button does.
+
+```vue
+<v-dialog
+		v-model="value"
+		id="commDocDialog"
+		:content-class="`commDocDialog overflow-dialog selected-comments--${selectedComments}`"
+		class="commDocDialog pb-5"
+		width="1200"
+		@click:outside="$emit('input', false)"
+		:attach="attach"
+	>
+		<v-card class="dialog-card commDocDialog pb-15">
+			<v-layout class="dialog-card__header pt-3 mb-3 mt-0" align-center>
+				<div class="text-h5 my-3" ref="dialogLabel">Comments & Documents</div>
+				<v-spacer />
+				<v-btn
+					@click="$emit('input', false), (openAddCommentDocument = false)"
+					icon
+					aria-label="Close Dialog"
+				>
+					<v-icon>fa-times</v-icon>
+				</v-btn>
+      </v-layout>
+		</v-card>
+</v-dialog>
+```
+
+## AutocompleteMixin a11y fix
+
+This mixin handles adding offscreen text that describes to a SR user how to navigate the autocomplete menu. We are lucky that vuetify handles the keyboard interaction here. all we really need to do is describe the way to navigate.
+
+```js
+// a11y remediation for autocomplete component
+export default {
+	data() {
+		return {
+			// search: '',
+			a11yAC: false,
+		}
+	},
+
+	methods: {
+		autocomplete_a11y() {
+			const listbox = document.querySelector('.v-autocomplete__content')
+			const ariaLive = document.createElement('div')
+			ariaLive.className = 'd-sr-only'
+			ariaLive.innerHTML = 'to navigate autocomplete options, use up and down arrow keys.'
+			ariaLive.setAttribute('aria-live', 'polite')
+			ariaLive.setAttribute('role', 'status')
+			listbox.append(ariaLive)
+		},
+	},
+	watch: {
+		search: {
+			handler(search) {
+				if (search !== '' && this.a11yAC == false) {
+					this.a11yAC = true
+					setTimeout(() => {
+						this.autocomplete_a11y()
+					}, 2000)
+				}
+			},
+			deep: true,
+		},
+	},
 }
 ```
 
-3. import into file that contains Vuetify expanded panels
-
-   ```js
-   import { panelChange } from '@/utils/AriaUtil'
-   ```
-
-4. add ref attribute to v-expansion-panel, and add a change event with the value of the ref as the parameter in the panelChange function
-
-```vue
-<v-expansion-panels flat>
-		<v-expansion-panel ref="assignedPanel" @change="panelChange($refs.assignedPanel)">
-			<v-expansion-panel-header v-slot:default="{ open }" class="" aria-expanded="false"
-				><div>
-					<div class="strata_blue d-inline">
-						<span v-if="!open" key="0" class="ml-1 pt-3 pr-15"
-							>{{ regimenTotal }} treatment regimens</span
-						>
-						<span v-else key="1" class="ml-5 py-0">hide treatment regimens</span>
-					</div>
-				</div>
-			</v-expansion-panel-header>
-			<v-expansion-panel-content>
-				<div
-					class="d-flex justify-start regimens-heading"
-					v-for="(item, i) in regimenData"
-					:key="i"
-				>
-					<div class="regimens-blue py-3 pl-1">
-						<v-icon class="tab-icon px-3" small>fas fa-pills</v-icon>
-						<span class="subhead ml-1 text-left">{{ item.r_num }} </span
-						><span class="ml-5">{{ item.name }}</span>
-					</div>
-
-					<div class="regimen-icon text-center py-0 px-2">
-						<v-icon class="tab-icon" style="margin-top: -5px !important;" small>fas fa-user</v-icon>
-						<div class="number">{{ item.num }}</div>
-					</div>
-				</div>
-			</v-expansion-panel-content>
-		</v-expansion-panel>
-	</v-expansion-panels>
-```
-
-4. Add panelChange with reference to template to mounted section. Also add panelChange as a method
-
-   ```js
-   export default {
-     mounted() {
-       panelChange(this.$refs.assignedPanel)
-     },
-     methods: {
-       panelChange
-     }
-   }
-   ```

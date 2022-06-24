@@ -739,56 +739,9 @@ For reference: <a href="<https://www.w3.org/TR/wai-aria-practices-1.1/examples/d
 
 <br>
 
-### Accordions (expansion Panels)
-
-Vuetify's implementation of A11y with expansion panels create problems. The following is how to fix.
-
-```html
-<v-expansion-panel
-  ref="assignedPanel"
-  @change="panelChange($refs.assignedPanel)"
->
-  <v-expansion-panel-header
-    v-slot:default="{ open }"
-    class=""
-    aria-expanded="false"
-  >
-    accordion button text
-  </v-expansion-panel-header>
-
-  <v-expansion-panel-content> panel content </v-expansion-panel-content>
-</v-expansion-panel>
-```
-
-```js
-export default {
-  mounted() {
-    panelChange(this.$refs.assignedPanel)
-  },
-  methods: {
-    panelChange
-  }
-}
-
-function panelChange(panel) {
-  setTimeout(() => {
-    // remove aria-label from wrapper
-    let wrapper = panel?.$el
-    wrapper.removeAttribute('aria-expanded')
-
-    // set aria-label on button
-    let button = panel?.$el?.querySelector('button')
-    if (button.getAttribute('aria-expanded') === null) {
-      button.setAttribute('aria-expanded', false)
-      wrapper.removeAttribute('aria-expanded')
-    }
-  }, 10)
-}
-```
-
 ---
 
-Vuetify does handle many a11y solutions for keyboard users built in their components.
+Vuetify does handle many a11y solutions for keyboard users built in their components. 
 <a href="https://vuetifyjs.com/en/features/accessibility/#additional-resources"  target="_blank">For more information on how Vuetify implements Accessiblity</a>
 
 <br>
